@@ -1,0 +1,38 @@
+import random
+import smtplib
+
+def generate_otp():
+    return str(random.randint(100000, 999999))
+
+def send_email(email, otp):
+    sender_email = "your_email@example.com"  # Replace with your email address
+    sender_password = "your_email_password"  # Replace with your email password
+    subject = "OTP Verification"
+    message = f"Your OTP is: {otp}"
+
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()
+        server.login(sender_email, sender_password)
+        server.sendmail(sender_email, email, f"Subject: {subject}\n\n{message}")
+        server.quit()
+        print("OTP sent successfully!")
+    except smtplib.SMTPException as e:
+        print("Error sending email:", str(e))
+
+def verify_otp():
+    email = input("Enter your email: ")
+    otp = input("Enter the OTP you received: ")
+
+    # Perform the verification logic here, such as comparing the entered OTP with the generated on
+    # Example verification logic
+    if otp == stored_otp:  # stored_otp should be the OTP generated and stored when sending the email
+        print("OTP verification successful!")
+    else:
+        print("OTP verification failed!")
+
+if __name__ == "__main__":
+    otp = generate_otp()
+    stored_otp = otp  # Store the OTP for later verification
+    send_email("user@example.com", otp)  # Replace with the recipient's email address
+    verify_otp()
